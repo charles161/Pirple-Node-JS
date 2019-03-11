@@ -1,0 +1,3 @@
+We are going to build a uptime monitoring system - users enter the url they wanted to be monitored - receive alerts when those urls go down or come back uptime
+
+Requiremnets
