@@ -5,6 +5,7 @@ library for storing and editing data
 
 var fs = require("fs");
 var path = require("path");
+var helpers = require("./helpers")
 
 //continer for the module(to be exported)
 var lib = {};
@@ -12,9 +13,9 @@ var lib = {};
 //base directooyr of the data  folder
 lib.baseDir = path.join(__dirname, "/../.data/");
 //for writing data to a file
-lib.create = function(dir, file, data, callback) {
+lib.create = function (dir, file, data, callback) {
     //open file for writing
-    fs.open(lib.baseDir + dir + "/" + file + ".json", "wx", function(
+    fs.open(lib.baseDir + dir + "/" + file + ".json", "wx", function (
         err,
         fileDescriptor
     ) {
@@ -22,9 +23,9 @@ lib.create = function(dir, file, data, callback) {
         if (!err && fileDescriptor) {
             //convert data to string
             var stringData = JSON.stringify(data);
-            fs.writeFile(fileDescriptor, stringData, function(err) {
+            fs.writeFile(fileDescriptor, stringData, function (err) {
                 if (!err) {
-                    fs.close(fileDescriptor, function(err) {
+                    fs.close(fileDescriptor, function (err) {
                         if (!err) {
                             callback(false);
                         } else {
@@ -42,19 +43,24 @@ lib.create = function(dir, file, data, callback) {
 };
 
 //for reading a file
-lib.read = function(dir, file, callback) {
-    fs.readFile(lib.baseDir + dir + "/" + file + ".json", "utf8", function(
+lib.read = function (dir, file, callback) {
+    fs.readFile(lib.baseDir + dir + "/" + file + ".json", "utf8", function (
         err,
         data
     ) {
-        callback(err, data);
+        if (!err && data) {
+            callback(false, helpers.parseBufferToJson(data));
+        }
+        else {
+            callback(err, data);
+        }
     });
 };
 
 //for updating a file
-lib.update = function(dir, file, data, callback) {
+lib.update = function (dir, file, data, callback) {
     //open the file for writing
-    fs.open(lib.baseDir + dir + "/" + file + ".json", "r+", function(
+    fs.open(lib.baseDir + dir + "/" + file + ".json", "r+", function (
         err,
         filedesc
     ) {
@@ -63,11 +69,11 @@ lib.update = function(dir, file, data, callback) {
             var stringdata = JSON.stringify(data);
 
             //Truncate the file(for overwrite file) , truncates - removes data
-            fs.ftruncate(filedesc, function(err) {
+            fs.ftruncate(filedesc, function (err) {
                 if (!err) {
-                    fs.writeFile(filedesc, stringdata, function(err) {
+                    fs.writeFile(filedesc, stringdata, function (err) {
                         if (!err) {
-                            fs.close(filedesc, function(err) {
+                            fs.close(filedesc, function (err) {
                                 if (!err) {
                                     callback(false);
                                 } else {
@@ -88,9 +94,9 @@ lib.update = function(dir, file, data, callback) {
     });
 };
 
-lib.delete = function(dir, file, callback) {
+lib.delete = function (dir, file, callback) {
     //unlink the file
-    fs.unlink(lib.baseDir + dir + "/" + file + ".json", function(err) {
+    fs.unlink(lib.baseDir + dir + "/" + file + ".json", function (err) {
         if (!err) {
             callback(false);
         } else {

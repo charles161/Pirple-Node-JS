@@ -3,12 +3,14 @@ var environments = {
     staging: {
         httpPort: 3000,
         httpsPort: 3001,
-        name: "staging"
+        name: "staging",
+        hashingSecret: "sadkljfhlaksd"
     },
     production: {
         httpPort: 5000,
         httpsPort: 5001,
-        name: "production"
+        name: "production",
+        hashingSecret: "iuoyqweiuryowi"
     }
 };
 //console.log("envs: ", process.env);

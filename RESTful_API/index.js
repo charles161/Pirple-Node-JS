@@ -8,20 +8,32 @@ var stringDecoder = require("string_decoder").StringDecoder;
 var log = console.log;
 var config = require("./config");
 var fs = require("fs");
+var handler = require("./lib/handlers");
+var _data = require('./lib/data')
+var helpers = require('./lib/helpers')
+
+
+_data.update("test", "new1", { name: 'charles', age: 230 }, (err) => {
+    console.log(err)
+})
 
 // define a request handler
-var handler = {
-    not_found: (data, callback) => {
-        callback(404, {});
-    },
-    ping: (data, callback) => {
-        callback(200);
-    }
-};
+// var handler = {
+//     ping: (data, cb) => {
+//         cb(200, { name: 'charles' });
+//     },
+//     users: (data, cb) => {
+//         cb(200, { name: 'users' });
+//     },
+//     not_found: (data, cb) => {
+//         cb(200, { name: 'not found' })
+//     }
+// }
 
 //define a request router
 var router = {
-    ping: handler.ping
+    ping: handler.ping,
+    users: handler.users
 };
 
 //all the server logic for both http and https server
@@ -62,7 +74,7 @@ var unifiedServer = (req, res) => {
         //this function is called every time regardless of its methods or payload
         buffer += decoder.end();
         var data = {
-            payload: buffer,
+            payload: helpers.parseBufferToJson(buffer),
             trimmedPath: trimmedPath,
             headers: headers,
             method: method,
