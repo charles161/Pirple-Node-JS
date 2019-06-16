@@ -1,0 +1,16 @@
+version: "3.7"
+
+services: #says what are we gonna orchestrate
+    #backend
+    restful_api:
+        container_name: backend
+        build: ./ 
+        command: node index.js
+        working_dir: /usr/src/RESTFUL_API
+        environment:
+            NODE_ENV: staging
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./:/usr/src/RESTFUL_API
+   
