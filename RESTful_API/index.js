@@ -34,7 +34,8 @@ _data.update("test", "new1", { name: 'charles', age: 230 }, (err) => {
 var router = {
     ping: handler.ping,
     users: handler.users,
-    tokens: handler.tokens
+    tokens: handler.tokens,
+    checks: handler.checks
 };
 
 //all the server logic for both http and https server

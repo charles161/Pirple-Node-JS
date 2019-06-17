@@ -9,6 +9,10 @@ services: #says what are we gonna orchestrate
         working_dir: /usr/src/RESTFUL_API
         environment:
             NODE_ENV: staging
+            FROMPHONE: "+12054309818"
+            SID: AC56c10132249533ecd36a8dba4e1f0952
+            TOKEN: 887eeccc3984239de9460c8b8dd8341c
+            
         ports:
             - "3000:3000"
         volumes:
